@@ -1,0 +1,30 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug executable 'IRIS'",
+            "cargo": {
+                "args": [
+                    "build",
+                    "--bin=IRIS",
+                    "--package=IRIS"
+                ],
+                "filter": {
+                    "name": "IRIS",
+                    "kind": "bin"
+                }
+            },
+            "args": ["--i1", "./examples/AY69_E4p5_LTA/host.blastn.6",
+                     "--i2", "./examples/AY69_E4p5_LTA/path.blastn.6",
+                     "--a1", "./examples/AY69_E4p5_LTA/host.gtf",
+                     "--a2", "./examples/csess.1.0.0.known.gtf",
+                     "--output", "./examples/AY69_E4p5_LTA/ris"],
+            "cwd": "${workspaceFolder}"
+        }
+    ]
+}

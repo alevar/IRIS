@@ -1,0 +1,9 @@
+4	ensembl	transcript	137938567	137965400	.	-	.	transcript_id "ENSMMUT00000012357"; gene_id "ENSMMUG00000008843"; gene_version "4"; transcript_version "4"; gene_name "LTA"; gene_source "ensembl"; gene_biotype "protein_coding"; transcript_name "LTA-201"; transcript_source "ensembl"; transcript_biotype "protein_coding"; tag "Ensembl_canonical"; protein_id "ENSMMUP00000011590"; protein_version "2"
+4	ensembl	exon	137938567	137939607	.	-	.	transcript_id "ENSMMUT00000012357"; gene_id "ENSMMUG00000008843"; gene_name "LTA"; exon_version "4";
+4	ensembl	exon	137939853	137939958	.	-	.	transcript_id "ENSMMUT00000012357"; gene_id "ENSMMUG00000008843"; gene_name "LTA"; exon_version "2";
+4	ensembl	exon	137940045	137940152	.	-	.	transcript_id "ENSMMUT00000012357"; gene_id "ENSMMUG00000008843"; gene_name "LTA"; exon_version "2";
+4	ensembl	exon	137940578	137940745	.	-	.	transcript_id "ENSMMUT00000012357"; gene_id "ENSMMUG00000008843"; gene_name "LTA"; exon_version "1";
+4	ensembl	exon	137965322	137965400	.	-	.	transcript_id "ENSMMUT00000012357"; gene_id "ENSMMUG00000008843"; gene_name "LTA"; exon_version "1";
+4	ensembl	CDS	137939195	137939607	.	-	2	transcript_id "ENSMMUT00000012357"; gene_id "ENSMMUG00000008843"; gene_name "LTA";
+4	ensembl	CDS	137939853	137939958	.	-	0	transcript_id "ENSMMUT00000012357"; gene_id "ENSMMUG00000008843"; gene_name "LTA";
+4	ensembl	CDS	137940045	137940143	.	-	0	transcript_id "ENSMMUT00000012357"; gene_id "ENSMMUG00000008843"; gene_name "LTA";
