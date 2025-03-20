@@ -1,0 +1,6 @@
+biopython
+intervaltree
+numpy
+pyfaidx
+pysam
+setuptools
