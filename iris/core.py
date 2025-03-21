@@ -20,8 +20,8 @@ from Bio.SeqRecord import SeqRecord
 class IRIS:
     def __init__(self, args):         
         # INPUT FILES
-        self.input1 = args.i1
-        self.input2 = args.i2
+        self.input1 = args.input1
+        self.input2 = args.input2
         self.annotation1 = args.annotation1
         self.annotation2 = args.annotation2
         self.genome1 = args.genome1
@@ -311,8 +311,8 @@ class IRIS:
         merged_gtf.append(f"chimeric\texon\t{offset2 + 1 + self.overhang}\t{offset2 + len(seq2) - self.overhang}\t.\t{strand2}\t.\ttranscript_id \"genome2_breakpoint\"")
 
         # Add truncated transcripts from both genomes
-        merged_gtf.extend(self.truncate_transcripts(self.gene_tree1, seqid1, strand1, adj_start1, adj_end1, offset1, strand1 == "-"))
-        merged_gtf.extend(self.truncate_transcripts(self.gene_tree2, seqid2, strand2, adj_start2, adj_end2, offset2, strand2 == "-"))
+        merged_gtf.extend(self.truncate_transcripts(self.gene_trees1, seqid1, strand1, adj_start1, adj_end1, offset1, strand1 == "-"))
+        merged_gtf.extend(self.truncate_transcripts(self.gene_trees2, seqid2, strand2, adj_start2, adj_end2, offset2, strand2 == "-"))
 
         return chimeric_seq, merged_gtf
 
@@ -448,9 +448,9 @@ class IRIS:
 
         da = None
         if orientation==1:
-            da = self.match_donor_acceptor(copy_binread.read1.donors,copy_binread.read2.acceptors,orientation)
+            da = self.match_donor_acceptor(copy_binread.read1.donors,copy_binread.read2.acceptors)
         else:
-            da = self.match_donor_acceptor(copy_binread.read2.donors,copy_binread.read1.acceptors,orientation)
+            da = self.match_donor_acceptor(copy_binread.read2.donors,copy_binread.read1.acceptors)
         weight_pairs = [[[None,None,None],[None,None,None]]] # weights are stored as: [[read1_pos,read1_label,read1_weight],[read2_pos,read2_label,read2_weight]]
         for pair in da:
             weight_pairs.append([pair[0],pair[1]])
@@ -493,8 +493,8 @@ class IRIS:
             end = tx.get_end()
             gene_trees.setdefault((seqid,strand),IntervalTree()).addi(start,end,(gid,"transcript"))
             for exon in tx.get_exons():
-                start = exon.get_start()
-                end = exon.get_end()
+                start = exon[2].get_start()
+                end = exon[2].get_end()
                 gene_trees.setdefault((seqid,strand),IntervalTree()).addi(start,end,(gid,"exon"))
 
         return gene_trees
@@ -570,7 +570,7 @@ def main():
                         required=True,
                         type=str,
                         help="GTF file containing gene annotations for genome #2.")
-    parser.add_argument('--two_pass',
+    parser.add_argument('--two-pass',
                         required=False,
                         action='store_true',
                         help="Run two pass approach. First pass will find all possible breakpoints. Second pass will try to match breakpoints that are close to each other.")
@@ -598,22 +598,22 @@ def main():
                         required=True,
                         type=str,
                         help="Output file.")
-    parser.add_argument('-max_dist',
+    parser.add_argument('--max-dist',
                         required=False,
                         type=int,
                         default=5,
                         help="Maximum distance between breakpoints of the two segments. Default: 5.")
-    parser.add_argument('-max_weight',
+    parser.add_argument('--max-weight',
                         required=False,
                         type=int,
                         default=5,
                         help="Maximum weight of a breakpoint when biasing the 2nd pass. Default: 5.")
-    parser.add_argument('-full_weight',
+    parser.add_argument('--full-weight',
                         required=False,
                         type=int,
                         default=5,
                         help="Weight of a breakpoint that matches donor and acceptor. Default: 5.")
-    parser.add_argument('-half_weight',
+    parser.add_argument('--half-weight',
                         required=False,
                         type=int,
                         default=3,

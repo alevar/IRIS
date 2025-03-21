@@ -13,7 +13,6 @@ import os
 import re
 import csv
 import subprocess
-import numpy as np
 from enum import Enum
 from Bio.Seq import Seq
 
@@ -252,118 +251,6 @@ def compare(i1: List[Tuple[int,...]], i2: List[Tuple[int,...]]) -> List[Tuple[in
             stack.append(right)
 
     return stack
-
-# runs compare() funciton and labels all matches as in and out of frame accordingly
-def compare_label_frame(chain1, chain2, strand):
-    if chain2 is np.nan or len(chain2) == 0:
-        [[x[0], x[1], -1] for x in chain1]
-    if chain1 is np.nan or len(chain1) == 0:
-        [[x[0], x[1], 1] for x in chain2]
-
-    mod_chain = compare(chain1, chain2)
-
-    if strand == "-":
-        mod_chain.reverse()
-
-    t_frame = 0
-    q_frame = 0
-
-    for mc in mod_chain:
-        if (mc[2] == -1):  # extra positions in the query
-            q_frame += slen(mc)
-        elif (mc[2] == 1):  # template positions missing from the query
-            t_frame += slen(mc)
-        elif (mc[2] == 0):  # matching positions between query and template
-            if (q_frame % 3 == t_frame % 3):
-                mc[2] = 100  # inframe
-            else:
-                mc[2] = -100  # outframe
-        else:
-            print("wrong code")
-            return
-
-    return mod_chain
-
-
-def compare_and_extract(chain1, chain2, strand):
-    if chain2 is np.nan or len(chain2) == 0:
-        return pd.Series([[[x[0], x[1], -1] for x in chain1], -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1])
-    if chain1 is np.nan or len(chain1) == 0:
-        return pd.Series([[[x[0], x[1], 1] for x in chain2], -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1])
-
-    # 1. compute the total number of matching positions between query and template
-    # 2. compute the number of matching positions in frame between query and template
-    mod_chain = compare(chain1, chain2)
-
-    c1len = clen(chain1)
-    c2len = clen(chain2)
-
-    if strand == "-":
-        mod_chain.reverse()
-
-    num_bp_extra = 0
-    num_bp_missing = 0
-    num_bp_inframe = 0
-    num_bp_match = 0
-    num_bp_outframe = 0
-
-    t_frame = 0
-    q_frame = 0
-
-    for mc in mod_chain:
-        if (mc[2] == -1):  # extra positions in the query
-            num_bp_extra += slen(mc)
-            q_frame += slen(mc)
-        elif (mc[2] == 1):  # template positions missing from the query
-            num_bp_missing += slen(mc)
-            t_frame += slen(mc)
-        elif (mc[2] == 0):  # matching positions between query and template
-            num_bp_match += slen(mc)
-            if (q_frame % 3 == t_frame % 3):
-                num_bp_inframe += slen(mc)  # TODO: shouldn't this be stranded?
-            else:
-                num_bp_outframe += slen(mc)
-        else:
-            print("wrong code")
-            return
-
-    # compute lpi, ilpi, mlpi, etc
-    lpi = int((100.0 * (float(c1len) / float(c2len))))
-    ilpi = int((100.0 * (float(num_bp_inframe) / float(c2len))))
-    mlpi = int((100.0 * (float(num_bp_match) / float(c2len))))
-
-    match_start = chain1[0][0] == chain2[0][0] if strand == '+' else chain1[-1][1] == chain2[-1][1]
-    match_end = chain1[-1][1] == chain2[-1][1] if strand == '+' else chain1[0][0] == chain2[0][0]
-
-    return pd.Series(
-        [mod_chain, c1len, c2len, match_start, match_end, num_bp_extra, num_bp_missing, num_bp_inframe, num_bp_match,
-         num_bp_outframe, lpi, ilpi, mlpi])
-
-
-def load_tid2aa(fname):
-    tid2aa = dict()
-
-    with open(fname, "r") as inFP:
-        cur_tid = ""
-        cur_aa = ""
-        for line in inFP:
-            if line[0] == ">":
-
-                if not len(cur_tid) == 0:
-                    tid2aa[cur_tid] = cur_aa
-
-                cur_tid = line[1:].rstrip()
-                cur_aa = ""
-            else:
-                cur_aa += line.rstrip()
-
-        if not len(cur_tid) == 0:
-            tid2aa[cur_tid] = cur_aa
-
-    res = pd.DataFrame.from_dict(tid2aa, orient="index").reset_index()
-    res.columns = ["tid", "aa"]
-    return res
-
 
 def merge(segs):
     segs.sort()

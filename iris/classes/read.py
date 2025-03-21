@@ -1,5 +1,6 @@
 import re
 from typing import List, Dict, Tuple, Optional, Any, Union
+from intervaltree import Interval
 
 class Read:
     def __init__(self):

@@ -12,7 +12,6 @@ setup(
     install_requires=[
         'biopython',
         'intervaltree',
-        'numpy',
         'pyfaidx',
         'setuptools'
     ],

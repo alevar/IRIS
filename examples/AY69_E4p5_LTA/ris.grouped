@@ -1,0 +1,5 @@
+genome1_seqid	genome2_seqid	genome1_breakpoint	genome2_breakpoint	orientation	genome1_start	genome1_end	genome2_start	genome2_end	count	junction1	junction2	gene1	gene2
+4	M33262.1	1109	1240	2	1241	1128	1005	1109	48	nef	ENSMMUG00000008843	ENSMMUG00000008843:exon	env:exon;env/vpu:exon;gag:exon;nef:exon;rev:exon;tat:exon;vif:exon;vpr:exon
+4	M33262.1	2247	1240	2	1241	1120	2160	2247	45	nef	ENSMMUG00000008843	ENSMMUG00000008843:exon	env:exon;env/vpu:exon;gag:exon;nef:exon;rev:exon;tat:exon;vif:exon;vpr:exon
+4	M33262.1	2695	5539	2	5540	5484	2579	2695	6	nef	-	ENSMMUG00000008843:intron	env:exon;env/vpu:exon;gag:exon;nef:exon;rev:exon;tat:exon;vif:exon;vpr:exon
+4	M33262.1	2695	1240	2	1241	1185	2590	2695	59	nef	-	ENSMMUG00000008843:intron	env:exon;env/vpu:exon;gag:exon;nef:exon;rev:exon;tat:exon;vif:exon;vpr:exon

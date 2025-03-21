@@ -53,23 +53,43 @@ $ pip install .
 
 ## Getting started
 
+IRIS expects BLAST alignments to be provided in the following format:
+
+```bash
+blastn \
+  -db blast_database \
+  -query query_fasta \
+  -out output.blastn6 \
+  -outfmt "6 qseqid qlen sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore"
+```
+
 ### Usage
 
 ```bash
-iris [-h] -s SAM -r REFERENCE [-o OUTPUT] [--qry_intron_match_score QRY_INTRON_MATCH_SCORE] 
-        [--trg_pos_match_score TRG_POS_MATCH_SCORE] [--trg_pos_mismatch_score TRG_POS_MISMATCH_SCORE]
+iris [-h] -i1 INPUT1 -i2 INPUT2 -a1 ANNOTATION1 -a2 ANNOTATION2 -o OUTPUT [--two_pass] [-g] [--chim-genome]
+                   [-g1 GENOME1] [-g2 GENOME2] [-max_dist MAX_DIST] [-max_weight MAX_WEIGHT]
+                   [-full_weight FULL_WEIGHT] [-half_weight HALF_WEIGHT] [--overhang OVERHANG]
 ```
 
 ### Options
 
 | Option | Description |
 | ------ | ----------- |
-| `-s, --sam` | Path to the SAM/BAM alignment file. Read names in the alignment are expected to match corresponding transcript_id in the reference annotationPath to the query GTF/GFF annotation file. |
-| `-r, --reference` | Path to the reference annotation. transcript_id field is expected to match read names in the sam alignment. |
-| `-o, --output` | Path to the output SAM/BAM file. |
-| `--qry_intron_match_score` | Score for matching query introns. |
-| `--trg_pos_match_score` | Score for matching target positions. |
-| `--trg_pos_mismatch_score` | Score for mismatching target positions. |
+| `-i1, --input1` | Path to the file containing BLAST mapping of reads to genome 1. Alignment is expected to have the following format: -outfmt "6 qseqid qlen sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore" |
+| `-i2, --input2` | Path to the file containing BLAST mapping of reads to genome 2. Alignment is expected to have the following format: -outfmt "6 qseqid qlen sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore" |
+| `-a1, --annotation1` | Path to the file containing GTF/GFF annotation for genome 1. |
+| `-a2, --annotation2` | Path to the file containing GTF/GFF annotation for genome 2. |
+| `-g1, --genome1` | Path to the file containing genome 1 FASTA sequence. |
+| `-g2, --genome2` | Path to the file containing genome 2 FASTA sequence. |
+| `--two-pass` | Flag enables the 2-pass mode. Breakpoints from the first pass will be used to bias DP trace towards consensus sites. |
+| `--group` | If enabled, will output a file with breakpoints groupped by position. |
+| `-o, --output` | Path to the output file. |
+| `--chim-genome` | (Requires -group). If enabled, will generate a fasta file with chimeric genome sequences, stitching together the two genomes at the breakpoints. |
+| `--max-dist` | Maximum distance between breakpoints of the two segments. Default: 5. |
+| `---max-weight` | Maximum weight of a breakpoint when biasing the 2nd pass. Default: 5. |
+| `--full-weight` | Weight of a breakpoint that matches donor and acceptor. Default: 5. |
+| `--half-weight` | Weight of a breakpoint that matches either donor or acceptor. Default: 3. |
+| `--overhang` | Number of bases to include in the chimeric genome overhang. Default: 1000. |
 
 ### Help Options
 
@@ -84,5 +104,5 @@ Sample datasets are provided in the "example" directory to test and get familiar
 The included example can be run with the following command from the root directory of the repository:
 
 ```bash
-iris --sam example/example.gtf --reference example/example.gtf --output example/output.sam
+iris --input1 ./examples/AY69_E4p5_LTA/host.blastn.6 --input2 ./examples/AY69_E4p5_LTA/path.blastn.6 --annotation1 ./examples/AY69_E4p5_LTA/host.gtf --annotation2 ./examples/csess.1.0.0.known.gtf --output ./examples/AY69_E4p5_LTA/ris --genome1 ./examples/AY69_E4p5_LTA/host.fa --genome2 ./examples/SIV239.fa --chim-genome --two-pass --group
 ```
