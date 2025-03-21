@@ -14,7 +14,6 @@ setup(
         'intervaltree',
         'numpy',
         'pyfaidx',
-        'pysam',
         'setuptools'
     ],
     long_description=open('README.md').read(),

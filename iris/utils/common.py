@@ -958,3 +958,22 @@ def parse_cigar_into_tuples(cigar):
 def build_cigar_from_tuples(ops):
     """Convert list of CIGAR tuples to CIGAR string"""
     return ''.join(f"{length}{op}" for op, length in ops)
+
+def sort_by_n_column(infname, outfname, n):
+    """
+    Sort a file by the nth column (read name).
+    
+    This function replaces the Unix 'sort -k1,1' command with pure Python implementation.
+    
+    Args:
+        infname (str): Path to the input file to be sorted
+        outfname (str): Path where the sorted file will be written
+        n (int): Column number to sort by (0-based)
+    """
+    with open(infname, 'r') as input_file:
+        lines = input_file.readlines()
+    
+    sorted_lines = sorted(lines, key=lambda line: line.split()[n])
+    
+    with open(outfname, 'w') as output_file:
+        output_file.writelines(sorted_lines)
