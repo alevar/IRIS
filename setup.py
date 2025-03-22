@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='iris-av',
-    version='0.0.1',
+    version='1.0.0',
     author='Ales Varabyou',
     author_email='ales.varabyou@jhu.edu',
     url='https://github.com/alevar/IRIS',

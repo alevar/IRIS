@@ -6,9 +6,9 @@
 
 ## Introduction
 
-IRIS is a method designed to detect and validate chimeric junction from multi-genome alignments. The method constructs a DP alignment matrix
-from two separate alignments to infer precise breakpoint. The two-pass algorithm is implemented to refine consistency of breakpoint inference.
-The method is designed to take advantage of anntoations of either or, ideally, both genomes involved in the chimeric event by penalizing and prioritizing events at known junctions.
+IRIS is a method designed to detect and validate retroviral integration sites by analyzing RNAseq and/or DNAseq reads for signs of chimerism. The method constructs a DP alignment matrix
+from two separate alignments (host and pathogen) to infer precise breakpoint. The two-pass algorithm is implemented to refine consistency of breakpoint inference.
+The method is designed to take advantage of genomic anntoations of either or, ideally, both genomes involved in the chimeric event by penalizing and prioritizing events at known junctions.
 
 ## Publications
 
